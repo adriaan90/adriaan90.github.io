@@ -18,10 +18,18 @@ jobs:
         with:
           python-version: '3.x'  # Replace '3.x' with your preferred version
       
-      - name: Install Dependencies
+      - name: Install Sphinx
         run: |
-          pip install sphinx ablog sphinx_pydata_theme
-      
+          pip install sphinx
+
+       - name: Install Ablog
+        run: |
+          pip install ablog
+
+       - name: Install Theme
+        run: |
+          pip install sphinx_pydata_theme
+          
       - name: Build Blog
         run: ablog build
       
