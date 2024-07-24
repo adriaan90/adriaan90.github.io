@@ -1,0 +1,4 @@
+ablog==0.11.10
+pydata-sphinx-theme==0.15.4
+Sphinx==7.4.7
+sphinx-panels==0.4.1
