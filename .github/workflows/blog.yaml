@@ -22,11 +22,11 @@ jobs:
         run: |
           pip install sphinx
 
-       - name: Install Ablog
+      - name: Install Ablog
         run: |
           pip install ablog
 
-       - name: Install Theme
+      - name: Install Theme
         run: |
           pip install sphinx_pydata_theme
           
