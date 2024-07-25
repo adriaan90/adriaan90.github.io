@@ -30,3 +30,13 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 html_theme = "pydata_sphinx_theme"
 html_static_path = ['_static']
+
+def setup(app):
+    app.add_css_file("custom.css")
+
+html_sidebars = {
+    "index": ["aboutme.html"],
+    "about": ["aboutme.html"],
+    "blog": ["ablog/tagcloud.html", "ablog/archives.html"],
+    "blog/**": ["ablog/postcard.html", "ablog/recentposts.html", "ablog/archives.html"],
+}
