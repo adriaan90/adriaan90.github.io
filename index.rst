@@ -7,6 +7,7 @@ Recent Posts
    :hidden:
 
    about
+   blog
 
 .. postlist:: 10
    :author: errbufferoverfl
