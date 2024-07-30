@@ -8,6 +8,7 @@ Recent Posts
 
    about
    blog
+   published
 
 .. postlist:: 10
    :author: errbufferoverfl
