@@ -11,8 +11,7 @@ Recent Posts
    published
 
 .. postlist:: 10
-   :author: errbufferoverfl
+   :author: adriaan
    :date: %Y-%m-%d
    :format: {date} - {title}
    :list-style: none
-   :excerpts:
