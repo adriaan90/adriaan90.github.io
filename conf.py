@@ -11,9 +11,9 @@
 blog_baseurl = "https://adriaan90.github.io"
 blog_title = "Adriaan's Blog"
 blog_path = "blog"
-blog_post_pattern = "blog/*/*"
+blog_post_pattern = "blog/*"
 blog_feed_fulltext = True
-blog_feed_subtitle = "Open communities, open science, communication, and data."
+blog_feed_subtitle = ""
 fontawesome_included = True
 post_redirect_refresh = 1
 post_auto_image = 1

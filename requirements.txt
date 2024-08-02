@@ -1,4 +1,10 @@
-ablog==0.11.10
-pydata-sphinx-theme==0.15.4
+ablog>=0.11.0rc2
+pydata-sphinx-theme>=0.13.0rc1
 Sphinx==7.4.7
 sphinx-panels==0.4.1
+sphinxcontrib-applehelp==1.0.8
+sphinxcontrib-devhelp==1.0.6
+sphinxcontrib-htmlhelp==2.0.6
+sphinxcontrib-jsmath==1.0.1
+sphinxcontrib-qthelp==1.0.8
+sphinxcontrib-serializinghtml==1.1.10
