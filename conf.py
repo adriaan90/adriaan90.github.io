@@ -17,29 +17,29 @@
 # -- Sphinx configuration ---------------------------------------------------
 
 # General information about the project.
-project = "Ruby Hammerhead"
-copyright = "2021, errbufferoverfl"
-author = "errbufferoverfl"
+project = "Adriaan's Blog"
+copyright = "2024, Adriaan van Niekerk"
+author = "adriaan"
 
 # The full version, including alpha/beta/rc tags
-release = '1.1.0'
+release = ''
 
-html_baseurl = "https://errbufferoverfl.github.io/"
-html_title = "Ruby Hammerhead"
-timezone = "Melbourne/Australia"
+html_baseurl = "https://adriaan90.github.io/"
+html_title = "Adriaan's Blog"
+timezone = ""
 
 # -- Ablog configuration ---------------------------------------------------
 ablog_builder = "dirhtml"
 
 # Base URL for the website, required for generating feeds.
 # e.g. blog_baseurl = "http://example.com/"
-blog_baseurl = "https://errbufferoverfl.github.io/"
+blog_baseurl = "https://adriaan90.github.io/"
 
 # A path relative to the configuration directory for posts archive pages.
 blog_path = "posts"
 
 # The "title" for the posts, used in active pages.  Default is ``'Blog'``.
-blog_title = "Ruby Hammerhead"
+blog_title = "Adriaan's Blog"
 
 # The path that you store your content in, this will be used for the browsing path
 # on your published website
@@ -116,8 +116,8 @@ html_static_path = ['_static']
 # further.  For a list of options available for each theme, see the
 # documentation.
 html_theme_options = {
-    "github_url": "https://github.com/errbufferoverfl/",
-    "twitter_url": "https://twitter.com/errbufferoverfl",
+    "github_url": "https://github.com/adriaan90/",
+    "twitter_url": "https://twitter.com/asvn90",
     "search_bar_text": "Search...",
     "show_prev_next": False,
     "navbar_center": [],
@@ -186,8 +186,8 @@ html_search_language = 'en'
 html_show_sourcelink = True
 
 # -- Opengraph configuration ---------------------------------------------------
-ogp_site_url = "https://errbufferoverfl.github.io/"
-ogp_image = "https://errbufferoverfl.github.io/_static/opengraph.png"
+ogp_site_url = "https://adriaan90.github.io/"
+ogp_image = "https://adriaan90.github.io/_static/opengraph.png"
 ogp_use_first_image = True
 ogp_image_alt = ""
 ogp_description_length = 200
