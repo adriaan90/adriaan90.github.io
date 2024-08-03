@@ -8,10 +8,10 @@
 
 # -- ABlog ---------------------------------------------------
 
-blog_baseurl = "https://adriaan90.github.io"
+blog_baseurl = "https://adriaan90.github.io/"
 blog_title = "Adriaan's Blog"
 blog_path = "blog"
-blog_post_pattern = "blog/*"
+blog_post_pattern = "blog/*/*"
 blog_feed_fulltext = True
 blog_feed_subtitle = ""
 fontawesome_included = True
