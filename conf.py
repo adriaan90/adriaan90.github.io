@@ -17,29 +17,29 @@
 # -- Sphinx configuration ---------------------------------------------------
 
 # General information about the project.
-project = "Adriaan's Blog"
-copyright = "2024, Adriaan van Niekerk"
-author = "adriaan"
+project = "Ruby Hammerhead"
+copyright = "2021, errbufferoverfl"
+author = "errbufferoverfl"
 
 # The full version, including alpha/beta/rc tags
-release = ''
+release = '1.1.0'
 
-html_baseurl = "https://adriaan90.github.io/"
-html_title = "Adriaan's Blog"
-timezone = "Cape Town/South Africa"
+html_baseurl = "https://errbufferoverfl.github.io/"
+html_title = "Ruby Hammerhead"
+timezone = "Melbourne/Australia"
 
 # -- Ablog configuration ---------------------------------------------------
 ablog_builder = "dirhtml"
 
 # Base URL for the website, required for generating feeds.
 # e.g. blog_baseurl = "http://example.com/"
-blog_baseurl = "https://adriaan90.github.io/"
+blog_baseurl = "https://errbufferoverfl.github.io/"
 
 # A path relative to the configuration directory for posts archive pages.
 blog_path = "posts"
 
 # The "title" for the posts, used in active pages.  Default is ``'Blog'``.
-blog_title = "Adriaan's Blog"
+blog_title = "Ruby Hammerhead"
 
 # The path that you store your content in, this will be used for the browsing path
 # on your published website
@@ -135,9 +135,10 @@ html_theme_options = {
 # below. See _templates/sidebar-nav.html for an example
 
 html_sidebars = {
-    "*": ["aboutme.html"],
+    "*": ["search-field.html", "sidebar-nav.html"],
     "posts": ["search-field.html", "sidebar-nav.html", "recentposts.html", "archives.html"],
-    "posts/**": ["search-field.html", "sidebar-nav.html", "postcard.html"]
+    "posts/**": ["search-field.html", "sidebar-nav.html", "postcard.html"],
+    "kitchen-sink/**": ["search-field.html", "sidebar-nav.html", "postcard.html"],
 }
 
 # The name of an image file (within the static path) to use as favicon of the
@@ -171,9 +172,6 @@ html_js_files = ["js/rubyhammerhead.js"]
 # https://example.org/style.css. The attributes is used for attributes of <link> tag. It defaults to an empty list.
 html_css_files = ["css/rubyhammerhead.css"]
 
-def setup(app):
-    app.add_css_file("custom.css")
-
 # If true, "(C) Copyright ..." is shown in the HTML footer. Default is True.
 html_show_copyright = True
 
@@ -188,8 +186,8 @@ html_search_language = 'en'
 html_show_sourcelink = True
 
 # -- Opengraph configuration ---------------------------------------------------
-ogp_site_url = "https://adriaan90.github.io/"
-ogp_image = "https://adriaan90.github.io/_static/opengraph.png"
+ogp_site_url = "https://errbufferoverfl.github.io/"
+ogp_image = "https://errbufferoverfl.github.io/_static/opengraph.png"
 ogp_use_first_image = True
 ogp_image_alt = ""
 ogp_description_length = 200
