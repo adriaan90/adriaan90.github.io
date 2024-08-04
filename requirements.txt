@@ -1,6 +1,8 @@
 ablog>=0.11.0rc2
 pydata-sphinx-theme>=0.13.0rc1
 Sphinx==7.4.7
+sphinx-copybutton==0.5.2
+sphinx_design==0.6.1
 sphinx-panels==0.4.1
 sphinxcontrib-applehelp==1.0.8
 sphinxcontrib-devhelp==1.0.6
@@ -8,3 +10,7 @@ sphinxcontrib-htmlhelp==2.0.6
 sphinxcontrib-jsmath==1.0.1
 sphinxcontrib-qthelp==1.0.8
 sphinxcontrib-serializinghtml==1.1.10
+sphinxext-opengraph==0.9.1
+typing_extensions==4.12.2
+urllib3==2.2.2
+watchdog==4.0.1
