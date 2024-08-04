@@ -48,8 +48,9 @@ blog_post_pattern = "posts/*/*"
 
 # -- Blog Post Related --------------------------------------------------------
 
-# Format date for a post.
+# Format date for a post
 post_date_format = "%b %d, %Y"
+pygments_style = 'sphinx'
 
 # Number of paragraphs (default is ``1``) that will be displayed as an excerpt
 # from the post. Setting this ``0`` will result in displaying no post excerpt

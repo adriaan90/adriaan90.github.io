@@ -1,19 +1,9 @@
-
 Recent Posts
 =============
 
 .. toctree::
-    :name: mastertoc
-    :caption: Contents
-    :titlesonly:
-    :hidden:
+   :maxdepth: 2
+   :hidden:
 
-    posts
-    published
-
-
-.. postlist:: 10
-   :date: %Y-%m-%d
-   :format: {date}: {title}
-   :list-style: none
-   :excerpts:
+   posts <posts.rst>
+   published
