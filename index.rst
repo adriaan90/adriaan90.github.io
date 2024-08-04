@@ -8,10 +8,7 @@ Recent Posts
     :titlesonly:
     :hidden:
 
-    Demo Blog <posts.rst>
-    Getting Started <getting-started.rst>
-    references.rst
-    changelog.rst
+    posts
 
 
 .. postlist:: 10
