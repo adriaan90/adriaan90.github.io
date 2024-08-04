@@ -2,10 +2,24 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <id>https://adriaan90.github.io/</id>
   <title>Adriaan's Blog</title>
-  <updated>2024-08-03T21:00:49.967535+00:00</updated>
+  <updated>2024-08-04T17:22:22.970789+00:00</updated>
   <link href="https://adriaan90.github.io/"/>
   <link href="https://adriaan90.github.io/posts/atom.xml" rel="self"/>
   <generator uri="https://ablog.readthedocs.io/" version="0.11.10">ABlog</generator>
+  <entry>
+    <id>https://adriaan90.github.io/posts/JSAE-SAE-conference/</id>
+    <title>Jsae Sae Conference</title>
+    <updated>2024-08-04T00:00:00+02:00</updated>
+    <content type="html">&lt;section id="jsae-sae-conference"&gt;
+
+&lt;p&gt;Test Test Test&lt;/p&gt;
+&lt;/section&gt;
+</content>
+    <link href="https://adriaan90.github.io/posts/JSAE-SAE-conference/"/>
+    <summary>Test Test Test</summary>
+    <category term=""/>
+    <published>2024-08-04T00:00:00+02:00</published>
+  </entry>
   <entry>
     <id>https://adriaan90.github.io/posts/2020/one-most/</id>
     <title>Are you crazy? I can’t swallow that.</title>

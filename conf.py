@@ -99,7 +99,7 @@ templates_path = ['_templates']
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
-exclude_patterns = ["README.md", "Pipfile", "Pipfile.lock", "Makefile", "make.bat", "logo.gif", "conf.py"]
+exclude_patterns = ["README.md", "Pipfile", "Pipfile.lock", "Makefile", "make.bat", "logo.gif", "conf.py",".venv"]
 
 # -- Options for HTML output -------------------------------------------------
 
@@ -120,8 +120,7 @@ html_theme_options = {
     "twitter_url": "https://twitter.com/asvn90",
     "search_bar_text": "Search...",
     "show_prev_next": False,
-    "navbar_center": [],
-    "footer_items": ["copyright", "sphinx-version", "last-updated"],
+    "navbar_center": []
 }
 
 # HTML Sidebar configuration -- options available depend on ablog & the Sphinx theme you use.
@@ -136,9 +135,8 @@ html_theme_options = {
 
 html_sidebars = {
     "*": ["search-field.html", "sidebar-nav.html"],
-    "posts": ["search-field.html", "sidebar-nav.html", "recentposts.html", "archives.html"],
-    "posts/**": ["search-field.html", "sidebar-nav.html", "postcard.html"],
-    "kitchen-sink/**": ["search-field.html", "sidebar-nav.html", "postcard.html"],
+    "posts": ["search-field.html", "sidebar-nav.html", "ablog/recentposts.html", "ablog/archives.html"],
+    "posts/**": ["search-field.html", "sidebar-nav.html", "ablog/postcard.html"],
 }
 
 # The name of an image file (within the static path) to use as favicon of the
