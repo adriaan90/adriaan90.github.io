@@ -14,20 +14,7 @@
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
 
-<<<<<<< HEAD
 # -- Sphinx configuration ---------------------------------------------------
-=======
-blog_baseurl = "https://adriaan90.github.io/"
-blog_title = "Adriaan's Blog"
-blog_path = "blog"
-blog_post_pattern = "blog/*/*"
-blog_feed_fulltext = True
-blog_feed_subtitle = ""
-fontawesome_included = True
-post_redirect_refresh = 1
-post_auto_image = 1
-post_auto_excerpt = 2
->>>>>>> origin/main
 
 # General information about the project.
 project = "Adriaan's Blog"

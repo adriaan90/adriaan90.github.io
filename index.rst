@@ -9,6 +9,7 @@ Recent Posts
     :hidden:
 
     posts
+    published
 
 
 .. postlist:: 10
