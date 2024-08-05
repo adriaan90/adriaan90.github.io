@@ -1,0 +1,40 @@
+name: deploy-website
+
+# Only run this when the master branch changes
+on:
+  pull_request:
+  push:
+    branches:
+    - main
+  workflow_dispatch:
+
+# This job installs dependencies, build the book, and pushes it to `gh-pages`
+jobs:
+  deploy-book:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    # Install dependencies
+    - uses: actions/setup-python@v4
+      with:
+        python-version: '3.12.x' 
+
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+
+    # Removes current blog files
+    - name: Removes current blog files
+      run: |
+        ablog clean -w docs
+
+    # Removes current blog files
+    - name: Build blog
+      run: |
+        ablog build -w docs
+    
+    # Adds .nojekyll file
+    - name: Add .nojekyll
+      run: |
+        cat > docs/.nojekyll
