@@ -2,14 +2,14 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <id>https://adriaan90.github.io/</id>
   <title>Adriaan's Blog</title>
-  <updated>2024-08-04T18:48:28.872365+00:00</updated>
+  <updated>2024-08-05T19:49:51.355366+00:00</updated>
   <link href="https://adriaan90.github.io/"/>
   <link href="https://adriaan90.github.io/posts/atom.xml" rel="self"/>
   <generator uri="https://ablog.readthedocs.io/" version="0.11.10">ABlog</generator>
   <entry>
     <id>https://adriaan90.github.io/posts/ideal-rankine-cycle/</id>
     <title>Ideal Rankine Cycle</title>
-    <updated>2020-04-21T00:00:00+02:00</updated>
+    <updated>2020-04-21T00:00:00+00:00</updated>
     <author>
       <name>adriaan</name>
     </author>
@@ -172,12 +172,12 @@ Work&lt;span class="w"&gt; &lt;/span&gt;generated&lt;span class="w"&gt; &lt;/spa
     <category term="rankine-cycle" label="rankine-cycle"/>
     <category term="thermodynamics" label="thermodynamics"/>
     <category term="tutorial" label="tutorial"/>
-    <published>2020-04-21T00:00:00+02:00</published>
+    <published>2020-04-21T00:00:00+00:00</published>
   </entry>
   <entry>
     <id>https://adriaan90.github.io/posts/JSAE-SAE-conference/</id>
     <title>JSAE/SAE conference in Kyoto, Japan</title>
-    <updated>2019-08-26T00:00:00+02:00</updated>
+    <updated>2019-08-26T00:00:00+00:00</updated>
     <author>
       <name>adriaan</name>
     </author>
@@ -332,6 +332,6 @@ The difference in peak temperature between the two graphs is approximately 100 Â
     <category term="automotive" label="automotive"/>
     <category term="research" label="research"/>
     <category term="travel" label="travel"/>
-    <published>2019-08-26T00:00:00+02:00</published>
+    <published>2019-08-26T00:00:00+00:00</published>
   </entry>
 </feed>
