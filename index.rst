@@ -5,5 +5,5 @@ Recent Posts
    :maxdepth: 2
    :hidden:
 
-   posts <posts.rst>
+   posts
    published

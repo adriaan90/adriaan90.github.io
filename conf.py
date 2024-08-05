@@ -91,11 +91,12 @@ extensions = [
     "myst_parser",
     "sphinx_design",
     "sphinx_copybutton",
-    "sphinxext.opengraph",
+    "sphinxext.opengraph"
 ]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
+copybutton_selector = "div:not(.no-copybutton) > div.highlight > pre"
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -119,9 +120,7 @@ html_static_path = ['_static']
 html_theme_options = {
     "github_url": "https://github.com/adriaan90/",
     "twitter_url": "https://twitter.com/asvn90",
-    "search_bar_text": "Search...",
-    "show_prev_next": False,
-    "navbar_center": []
+    "search_bar_text": "Search..."
 }
 
 # HTML Sidebar configuration -- options available depend on ablog & the Sphinx theme you use.
@@ -135,7 +134,9 @@ html_theme_options = {
 # below. See _templates/sidebar-nav.html for an example
 
 html_sidebars = {
-    "*": ["search-field.html", "sidebar-nav.html"],
+    "index": ["hello.html"],
+    "projects": ["hello.html"],
+    "*": ["hello.html"],
     "posts": ["search-field.html", "sidebar-nav.html", "ablog/recentposts.html", "ablog/archives.html"],
     "posts/**": ["search-field.html", "sidebar-nav.html", "ablog/postcard.html"],
 }
@@ -195,3 +196,7 @@ ogp_type = "article"
 # -- sphinx-sitemap configuration ---------------------------------------------------
 sitemap_filename = "sitemap.xml"
 sitemap_locales = ['en']
+
+
+def setup(app):
+    app.add_css_file("css/custom.css")

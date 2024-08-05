@@ -1,4 +1,4 @@
-name: deploy-website
+name: deploy-blog
 
 # Only run this when the master branch changes
 on:
@@ -8,9 +8,9 @@ on:
     - main
   workflow_dispatch:
 
-# This job installs dependencies, build the book, and pushes it to `gh-pages`
+# This job installs dependencies and builds the blog
 jobs:
-  deploy-book:
+  deploy-blog:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2

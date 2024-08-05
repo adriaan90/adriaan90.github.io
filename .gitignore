@@ -5,3 +5,4 @@ _website
 .venvpip
 .venv
 __pycache__
+docs
