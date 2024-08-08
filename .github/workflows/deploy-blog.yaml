@@ -2,19 +2,16 @@ name: deploy-blog
 
 # Only run this when the master branch changes
 on:
+  pull_request:
   push:
     branches:
     - main
   workflow_dispatch:
 
-# This job installs dependencies and builds the blog
+# This job installs dependencies, build the blog, and pushes it to `gh-pages`
 jobs:
   deploy-blog:
     runs-on: ubuntu-latest
-    permissions:
-      # Give the default GITHUB_TOKEN write permission to commit and push the
-      # added or changed files to the repository.
-      contents: write
     steps:
     - uses: actions/checkout@v4
 
@@ -27,20 +24,15 @@ jobs:
       run: |
         pip install -r requirements.txt
 
-    # Removes current blog files
-    - name: Removes current blog files
+    # Build the blog
+    - name: Build the site
       run: |
-        ablog clean -w docs
+        ablog build
 
-    # Removes current blog files
-    - name: Build blog
-      run: |
-        ablog build -w docs
-    
-    # Adds .nojekyll file
-    - name: Add .nojekyll
-      run: |
-        cat > docs/.nojekyll
-
-    # Commit all changed files back to the repository
-    - uses: stefanzweifel/git-auto-commit-action@v5
+    # If we've pushed to main, push the blog's HTML to github-pages
+    - if: ${{ github.ref == 'refs/heads/main' }}
+      name: GitHub Pages action
+      uses: peaceiris/actions-gh-pages@v4
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./_website
