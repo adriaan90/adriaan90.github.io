@@ -12,7 +12,7 @@ The problem
 -----------
 
 Consider a regenerative cycle using steam as the working fluid. 
-Steam leaves the boiler and enters the turbine at 4 MPa, 400$^\circ$C. 
+Steam leaves the boiler and enters the turbine at 4 MPa, :math:`\text{400}^\circ\text{C}`. 
 After expansion to 400 kPa, some of the steam is extracted from the turbine to heat the feedwater in an open FWH. 
 The pressure in the FWH is 400 kPa, and the water leaving it is saturated liquid at 400 kPa. 
 The steam not extracted expands to 10 kPa. Determine the cycle efficiency.
