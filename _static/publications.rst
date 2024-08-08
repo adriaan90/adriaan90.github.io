@@ -12,4 +12,3 @@ van Niekerk, A., Drew, B., Larsen, N., Kay, P. (2020). **Data set for influence 
 van Niekerk, A., Kay, P., Drew, B., Larsen, N. (2019). **Optimisation of Low Temperature Combustion Technology, for Future Drive Cycles, using a Factorial Design of Experiments**. SAE International. `dx.doi.org/10.4271/2019-01-2171 <http://dx.doi.org/10.4271/2019-01-2171>`_
 
 van Niekerk, A., Drew, B., Larsen, N., Kay, P. (2019). **Influence of blends of diesel and renewable fuels on compression ignition engine emissions over transient engine conditions**. Elsevier BV. `dx.doi.org/10.1016/j.apenergy.2019.113890 <http://dx.doi.org/10.1016/j.apenergy.2019.113890>`_
-

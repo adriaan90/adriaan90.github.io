@@ -1,0 +1,814 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta property="og:title" content="Ideal Rankine Cycle" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://adriaan90.github.io/posts/ideal-rankine-cycle/" />
+<meta property="og:site_name" content="Adriaan's Blog" />
+<meta property="og:description" content="How to calculate the thernal efficiency of an Ideal Rankine Cycle using Python and PYroMat The Problem: Consider the following question: Determine the efficiency of a Rankine cycle using steam as t..." />
+<meta property="og:image" content="https://adriaan90.github.io/_images/ideal-rankine-cycle-output.png" />
+<meta property="og:image:alt" content="Adriaan's Blog" />
+<meta name="description" content="How to calculate the thernal efficiency of an Ideal Rankine Cycle using Python and PYroMat The Problem: Consider the following question: Determine the efficiency of a Rankine cycle using steam as t..." />
+
+    <title>Ideal Rankine Cycle &#8212; Adriaan&#39;s Blog</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=1f15714c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/rubyhammerhead.css?v=1cf6dd3f" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=187304be"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=6b89569b"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'posts/ideal-rankine-cycle';</script>
+    <script src="../../_static/js/rubyhammerhead.js?v=c337c661"></script>
+    <link rel="canonical" href="https://adriaan90.github.io/posts/ideal-rankine-cycle/" />
+    <link rel="index" title="Index" href="../../genindex/" />
+    <link rel="search" title="Search" href="../../search/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+    <meta name="docbuild:last-update" content="Aug 08, 2024"/>
+
+<link
+  rel="alternate"
+  type="application/atom+xml"
+  href="../../posts/atom.xml"
+  title="Adriaan's Blog"
+/>
+
+
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search/"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Adriaan's Blog</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../">
+    Posts
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../published/">
+    Published
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/adriaan90/" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://twitter.com/asvn90" title="Twitter" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-twitter fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Twitter</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../">
+    Posts
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../published/">
+    Published
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/adriaan90/" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://twitter.com/asvn90" title="Twitter" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-twitter fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Twitter</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<form class="bd-search d-flex align-items-center"
+      action="../../search/"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+        <div class="sidebar-primary-item"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../">Posts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../published/">Published</a></li>
+</ul>
+</div>
+        <div class="sidebar-primary-item">
+<div class="ablog-sidebar-item ablog__postcard">
+
+
+<h2>
+  
+  
+  <i class="fa fa-calendar"></i>
+  
+  <span>Apr 21, 2020</span>
+  
+</h2>
+<ul>
+  <div class="ablog-sidebar-item ablog__postcard2">
+
+
+<li id="ablog-sidebar-item author ablog__author">
+  <span>
+    
+    <i class="fa-fw fa fa-user"></i>
+    
+    </span>
+  
+  
+  <a href="../author/adriaan/">adriaan</a>
+  
+  
+  
+</li>
+
+
+
+
+
+<li id="ablog-sidebar-item tags ablog__tags">
+  <span>
+    
+    
+    <i class="fa-fw fa fa-tags"></i>
+    
+    
+    </span>
+  
+  
+  <a href="../tag/tutorial/">tutorial</a>
+  
+  
+  
+  
+  
+  <a href="../tag/thermodynamics/">thermodynamics</a>
+  
+  
+  
+  
+  
+  <a href="../tag/rankine-cycle/">rankine-cycle</a>
+  
+  
+  
+  
+  
+  <a href="../tag/pyromat/">PYroMat</a>
+  
+  
+  
+</li>
+
+
+</div>
+</ul>
+</div>
+</div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">Ideal Rankine Cycle</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+<section id="ideal-rankine-cycle">
+<h1>Ideal Rankine Cycle<a class="headerlink" href="#ideal-rankine-cycle" title="Link to this heading">#</a></h1>
+<p>How to calculate the thernal efficiency of an Ideal Rankine Cycle using Python and PYroMat</p>
+<section id="the-problem">
+<h2>The Problem<a class="headerlink" href="#the-problem" title="Link to this heading">#</a></h2>
+<p>Consider the following question:</p>
+<p><strong>Determine the efficiency of a Rankine cycle using steam as the working fluid in which the condenser pressure is 10 kPa.
+The boiler pressure is 2 MPa. The steam leaves the boiler as saturated vapor.</strong></p>
+</section>
+<section id="initiate-pyromat-and-configure-its-units">
+<h2>Initiate <em>PYroMat</em> and configure its units<a class="headerlink" href="#initiate-pyromat-and-configure-its-units" title="Link to this heading">#</a></h2>
+<p>The first thing that we need to do before we start with solving the problem, is to import the necessary packages and configure PYroMat to use the correct units:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pyromat</span> <span class="k">as</span> <span class="nn">pm</span>
+
+<span class="n">pm</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;unit_pressure&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;kPa&quot;</span>
+<span class="n">pm</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;def_p&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">100</span>
+
+<span class="n">mp_water</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;mp.H2O&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>To determine the cycle efficiency, we must calculate the turbine work, the pump work, and the heat transfer to the steam in the boiler.
+We do this by considering a control surface around each of these components in turn.
+In each case the thermodynamic model is the steam tables, and the process is steady state with negligible changes in kinetic and potential energies.</p>
+</section>
+<section id="the-pump">
+<h2>The Pump<a class="headerlink" href="#the-pump" title="Link to this heading">#</a></h2>
+<p>First, consider the pump:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#saturated liquid, thus x = 0</span>
+<span class="n">p1</span> <span class="o">=</span> <span class="mi">10</span> <span class="c1"># &lt;--given</span>
+<span class="n">T1</span> <span class="o">=</span> <span class="n">mp_water</span><span class="o">.</span><span class="n">Ts</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="n">p1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">s1</span> <span class="o">=</span> <span class="n">mp_water</span><span class="o">.</span><span class="n">ss</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="n">p1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">p2</span> <span class="o">=</span> <span class="mi">2000</span> <span class="c1"># &lt;--given and converted to kPa</span>
+<span class="n">s2</span><span class="o">=</span> <span class="n">s1</span>
+<span class="n">v</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="n">mp_water</span><span class="o">.</span><span class="n">ds</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="n">p1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="n">w_p</span> <span class="o">=</span> <span class="n">v</span><span class="o">*</span><span class="p">(</span><span class="n">p2</span><span class="o">-</span><span class="n">p1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Work required by pump: </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">w_p</span><span class="p">),</span><span class="mi">1</span><span class="p">)</span><span class="si">}</span><span class="s2"> kJ/kg&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>Work<span class="w"> </span>required<span class="w"> </span>by<span class="w"> </span>pump:<span class="w"> </span><span class="m">2</span>.0<span class="w"> </span>kJ/kg
+</pre></div>
+</div>
+<p>After the work required by the pump is calculated, the enthalpy value after the pump (point 2) can be calculated:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">h1</span> <span class="o">=</span> <span class="n">mp_water</span><span class="o">.</span><span class="n">hs</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="n">p1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">h2</span> <span class="o">=</span> <span class="n">h1</span><span class="o">+</span><span class="n">w_p</span>
+<span class="n">T2</span> <span class="o">=</span> <span class="n">mp_water</span><span class="o">.</span><span class="n">T_h</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="n">p2</span><span class="p">,</span><span class="n">h</span><span class="o">=</span><span class="n">h2</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;h2 = </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">h2</span><span class="p">),</span><span class="mi">1</span><span class="p">)</span><span class="si">}</span><span class="s2"> kJ/kg&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">h2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">193</span>.8<span class="w"> </span>kJ/kg
+</pre></div>
+</div>
+</section>
+<section id="the-boiler">
+<h2>The Boiler<a class="headerlink" href="#the-boiler" title="Link to this heading">#</a></h2>
+<p>Next, lets consider the boiler:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># steam leaves the boiler as saturated vapor, thus x = 1</span>
+<span class="n">p3</span> <span class="o">=</span> <span class="n">p2</span>
+<span class="n">T3</span> <span class="o">=</span> <span class="n">mp_water</span><span class="o">.</span><span class="n">Ts</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="n">p3</span><span class="p">)</span>
+
+<span class="n">h3</span> <span class="o">=</span> <span class="n">mp_water</span><span class="o">.</span><span class="n">hs</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="n">p3</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">s3dash</span> <span class="o">=</span> <span class="n">mp_water</span><span class="o">.</span><span class="n">ss</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="n">p3</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">T3dash</span> <span class="o">=</span> <span class="n">T3</span>
+<span class="n">s3</span> <span class="o">=</span> <span class="n">mp_water</span><span class="o">.</span><span class="n">ss</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="n">p3</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">q_H</span> <span class="o">=</span> <span class="n">h3</span><span class="o">-</span><span class="n">h2</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Heat input by boiler: </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">q_H</span><span class="p">),</span><span class="mi">1</span><span class="p">)</span><span class="si">}</span><span class="s2"> kJ/kg&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>Heat<span class="w"> </span>input<span class="w"> </span>by<span class="w"> </span>boiler:<span class="w"> </span><span class="m">2604</span>.5<span class="w"> </span>kJ/kg
+</pre></div>
+</div>
+</section>
+<section id="the-turbine">
+<h2>The Turbine<a class="headerlink" href="#the-turbine" title="Link to this heading">#</a></h2>
+<p>Now, we consider the turbine:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">p4</span> <span class="o">=</span> <span class="n">p1</span>
+<span class="n">s4</span> <span class="o">=</span> <span class="n">s3</span>
+<span class="n">T4</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="n">mp_water</span><span class="o">.</span><span class="n">T_s</span><span class="p">(</span><span class="n">s</span><span class="o">=</span><span class="n">s4</span><span class="p">,</span><span class="n">p</span><span class="o">=</span><span class="n">p4</span><span class="p">,</span> <span class="n">quality</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">h4</span> <span class="o">=</span> <span class="n">mp_water</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="n">p4</span><span class="p">,</span><span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">)</span>
+<span class="n">w_t</span> <span class="o">=</span> <span class="n">h3</span><span class="o">-</span><span class="n">h4</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Quality of low pressure steam: </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="mi">4</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Work generated by turbine: </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">w_t</span><span class="p">),</span><span class="mi">1</span><span class="p">)</span><span class="si">}</span><span class="s2"> kJ/kg&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>Quality<span class="w"> </span>of<span class="w"> </span>low<span class="w"> </span>pressure<span class="w"> </span>steam:<span class="w"> </span><span class="m">0</span>.7587
+Work<span class="w"> </span>generated<span class="w"> </span>by<span class="w"> </span>turbine:<span class="w"> </span><span class="m">791</span>.7<span class="w"> </span>kJ/kg
+</pre></div>
+</div>
+</section>
+<section id="the-condenser">
+<h2>The Condenser<a class="headerlink" href="#the-condenser" title="Link to this heading">#</a></h2>
+<p>Finally, we consider the condenser:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">q_L</span> <span class="o">=</span> <span class="n">h4</span><span class="o">-</span><span class="n">h1</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Heat rejected by the condenser: </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">q_L</span><span class="p">),</span><span class="mi">1</span><span class="p">)</span><span class="si">}</span><span class="s2"> kJ/kg&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>Heat<span class="w"> </span>rejected<span class="w"> </span>by<span class="w"> </span>the<span class="w"> </span>condenser:<span class="w"> </span><span class="m">1814</span>.8<span class="w"> </span>kJ/kg
+</pre></div>
+</div>
+</section>
+<section id="thermal-efficiency">
+<h2>Thermal Efficiency<a class="headerlink" href="#thermal-efficiency" title="Link to this heading">#</a></h2>
+<p>We can now calculate the thermal efficiency with <span class="math notranslate nohighlight">\(\eta_{th}=\frac{w_{net}}{q_H}\)</span></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">eta_th</span> <span class="o">=</span> <span class="p">(</span><span class="n">w_t</span><span class="o">-</span><span class="n">w_p</span><span class="p">)</span><span class="o">/</span><span class="n">q_H</span><span class="o">*</span><span class="mi">100</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Thermal efficiency is: </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">eta_th</span><span class="p">),</span><span class="mi">1</span><span class="p">)</span><span class="si">}</span><span class="s2">%&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>Thermal<span class="w"> </span>efficiency<span class="w"> </span>is:<span class="w"> </span><span class="m">30</span>.3%
+</pre></div>
+</div>
+</section>
+<section id="plotting-the-ideal-rankine-cycle">
+<h2>Plotting the Ideal Rankine Cycle<a class="headerlink" href="#plotting-the-ideal-rankine-cycle" title="Link to this heading">#</a></h2>
+<p>After all the points have been calculated, the Rankine Cycle can be shown visually on a graph.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">22063</span><span class="p">,</span><span class="mi">1000</span><span class="p">)</span>
+<span class="n">T</span> <span class="o">=</span> <span class="n">mp_water</span><span class="o">.</span><span class="n">Ts</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="n">p</span><span class="p">)</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">mp_water</span><span class="o">.</span><span class="n">ss</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="n">p</span><span class="p">)</span>
+
+
+<span class="n">font</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;family&#39;</span> <span class="p">:</span> <span class="s1">&#39;Times New Roman&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;size&#39;</span>   <span class="p">:</span> <span class="mi">22</span><span class="p">}</span>
+
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Ideal Rankine Cycle T-s Diagram&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rc</span><span class="p">(</span><span class="s1">&#39;font&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">font</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">T</span><span class="p">,</span> <span class="s1">&#39;b--&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">T</span><span class="p">,</span><span class="s1">&#39;r--&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Temperature (K)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Entropy (s)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">s1</span><span class="p">,</span> <span class="n">s2</span><span class="p">,</span> <span class="n">s3dash</span><span class="p">,</span> <span class="n">s3</span><span class="p">,</span> <span class="n">s4</span><span class="p">,</span> <span class="n">s1</span><span class="p">],[</span><span class="n">T1</span><span class="p">,</span> <span class="n">T2</span><span class="p">,</span> <span class="n">T3dash</span><span class="p">,</span> <span class="n">T3</span><span class="p">,</span> <span class="n">T4</span><span class="p">,</span> <span class="n">T1</span><span class="p">],</span> <span class="s1">&#39;black&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">s1</span><span class="o">-</span><span class="mf">.1</span><span class="p">,</span><span class="n">T1</span><span class="p">,</span><span class="sa">f</span><span class="s1">&#39;(1)</span><span class="se">\n</span><span class="s1">T = </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">T1</span><span class="p">),</span><span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="s1"> K</span><span class="se">\n</span><span class="s1">h = </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">h1</span><span class="p">),</span><span class="mi">1</span><span class="p">)</span><span class="si">}</span><span class="s1"> kJ/kg</span><span class="se">\n</span><span class="s1"> s = </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">s1</span><span class="p">),</span><span class="mi">3</span><span class="p">)</span><span class="si">}</span><span class="s1"> kJ/kgK&#39;</span><span class="p">,</span>
+ <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">,</span><span class="n">backgroundcolor</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">1.6</span><span class="p">,</span><span class="mi">330</span><span class="p">,</span><span class="sa">f</span><span class="s1">&#39;(2)</span><span class="se">\n</span><span class="s1">T = </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">T2</span><span class="p">),</span><span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="s1"> K</span><span class="se">\n</span><span class="s1">h = </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">h2</span><span class="p">),</span><span class="mi">1</span><span class="p">)</span><span class="si">}</span><span class="s1"> kJ/kg </span><span class="se">\n</span><span class="s1">s = </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">s2</span><span class="p">),</span><span class="mi">3</span><span class="p">)</span><span class="si">}</span><span class="s1"> kJ/kgK&#39;</span><span class="p">,</span>
+ <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">,</span><span class="n">backgroundcolor</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">s3</span><span class="o">+</span><span class="mf">.1</span><span class="p">,</span><span class="n">T3</span><span class="p">,</span><span class="sa">f</span><span class="s1">&#39;(3)</span><span class="se">\n</span><span class="s1">T = </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">T3</span><span class="p">),</span><span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="s1"> K</span><span class="se">\n</span><span class="s1">h = </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">h3</span><span class="p">),</span><span class="mi">1</span><span class="p">)</span><span class="si">}</span><span class="s1"> kJ/kg </span><span class="se">\n</span><span class="s1">s = </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">s3</span><span class="p">),</span><span class="mi">3</span><span class="p">)</span><span class="si">}</span><span class="s1"> kJ/kgK&#39;</span><span class="p">,</span>
+ <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">,</span><span class="n">backgroundcolor</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">s4</span><span class="o">+</span><span class="mf">.1</span><span class="p">,</span><span class="n">T4</span><span class="p">,</span><span class="sa">f</span><span class="s1">&#39;(4)</span><span class="se">\n</span><span class="s1">T = </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">T4</span><span class="p">),</span><span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="s1"> K</span><span class="se">\n</span><span class="s1">h = </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">h4</span><span class="p">),</span><span class="mi">1</span><span class="p">)</span><span class="si">}</span><span class="s1"> kJ/kg </span><span class="se">\n</span><span class="s1">s = </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">s4</span><span class="p">),</span><span class="mi">3</span><span class="p">)</span><span class="si">}</span><span class="s1"> kJ/kgK</span><span class="se">\n</span><span class="s1">x = </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="mi">3</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+ <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">,</span><span class="n">backgroundcolor</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<a class="reference internal image-reference" href="../../_images/ideal-rankine-cycle-output.png"><img alt="../../_images/ideal-rankine-cycle-output.png" src="../../_images/ideal-rankine-cycle-output.png" style="width: 80%;" />
+</a>
+</figure>
+</section>
+</section>
+
+<div class="section ablog__blog_comments">
+  
+  
+
+
+<div class="section ablog__prev-next">
+  <span class="ablog__prev">
+    
+    
+    <a href="../JSAE-SAE-conference/">
+      
+      <i class="fa fa-arrow-circle-left"></i>
+      
+      <span>JSAE/SAE conference in Kyoto, Japan</span>
+    </a>
+    
+  </span>
+  <span class="ablog__spacer">&nbsp;</span>
+  <span class="ablog__next">
+    
+    
+    <a href="../ideal-rankine-cycle-regen/">
+      <span>Ideal Rankine Cycle with feedwater heater calculations</span>
+      
+      <i class="fa fa-arrow-circle-right" ></i>
+      
+    </a>
+    
+  </span>
+</div>
+
+  
+  
+</div>
+
+                </article>
+              
+<!-- Add a comment box underneath the page's content -->
+<script src="https://giscus.app/client.js"
+        data-repo="adriaan90/adriaan90.github.io"
+        data-repo-id="R_kgDOMah8pw"
+        data-category="General"
+        data-category-id="DIC_kwDOMah8p84ChRaO"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="bottom"
+        data-theme="preferred_color_scheme"
+        data-lang="en"
+        crossorigin="anonymous"
+        async>
+</script>
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-problem">The Problem</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#initiate-pyromat-and-configure-its-units">Initiate <em>PYroMat</em> and configure its units</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-pump">The Pump</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-boiler">The Boiler</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-turbine">The Turbine</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-condenser">The Condenser</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#thermal-efficiency">Thermal Efficiency</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting-the-ideal-rankine-cycle">Plotting the Ideal Rankine Cycle</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="../../_sources/posts/ideal-rankine-cycle.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024, Adriaan van Niekerk.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
