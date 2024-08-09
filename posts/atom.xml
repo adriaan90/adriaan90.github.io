@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <id>https://adriaan90.github.io/</id>
   <title>Adriaan's Blog</title>
-  <updated>2024-08-09T18:06:20.966869+00:00</updated>
+  <updated>2024-08-09T18:50:09.313880+00:00</updated>
   <link href="https://adriaan90.github.io/"/>
   <link href="https://adriaan90.github.io/posts/atom.xml" rel="self"/>
   <generator uri="https://ablog.readthedocs.io/" version="0.11.11">ABlog</generator>
@@ -600,6 +600,232 @@ Work&lt;span class="w"&gt; &lt;/span&gt;generated&lt;span class="w"&gt; &lt;/spa
     <category term="thermodynamics" label="thermodynamics"/>
     <category term="tutorial" label="tutorial"/>
     <published>2020-04-21T00:00:00+00:00</published>
+  </entry>
+  <entry>
+    <id>https://adriaan90.github.io/posts/python-how-to-webscrape-facebook/</id>
+    <title>How to webscrape Facebook with Python</title>
+    <updated>2020-04-04T00:00:00+00:00</updated>
+    <author>
+      <name>adriaan</name>
+    </author>
+    <content type="html">&lt;section id="how-to-webscrape-facebook-with-python"&gt;
+
+&lt;section id="the-problem"&gt;
+&lt;h2&gt;The problem&lt;/h2&gt;
+&lt;p&gt;I am sure you have seen posts from a company’s or small business’s Facebook page where they ask you to like, share and follow in order to win a prize.
+But, how do these businesses then determine who have won? They will have to go and compare the names of all the people who:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;liked the post,&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;shared the post and&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;followed their page&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;and then randomly select a winner from that group of people.
+If there are about 10 people who engaged with that promotional post, then it won’t take too long, but imagine if hundreds of people participated?
+It will take quite a lot of time to determine the winner then…&lt;/p&gt;
+&lt;p&gt;To help save a bit of time, we are going to construct a program that will scrape all the names of the people who engaged with the promotion post and randomly select a winner from the eligible participants.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Right! Let’s get started!&lt;/strong&gt;&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id="the-data-page-source"&gt;
+&lt;h2&gt;The data page_source&lt;/h2&gt;
+&lt;p&gt;We are interested in the names of people who follow the business’s page and who liked and shared the post in question.
+All of this information is available on Facebook.
+In the end we will have three lists:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;a list containing the names of people who follow the business’s Facebook page,&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;a list of people who have liked the promotional post and&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;a list of people who have shared the post.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The names that appear in all three lists, will be put in a final list and a random winner will be selected from the list of eligible names.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id="coding-the-web-scraper"&gt;
+&lt;h2&gt;Coding the web scraper&lt;/h2&gt;
+&lt;section id="requirements"&gt;
+&lt;h3&gt;Requirements&lt;/h3&gt;
+&lt;p&gt;For this program to work, you will need to install:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;Python 3.x&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Requests library&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Beautifulsoup library&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Selenium library&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/section&gt;
+&lt;section id="get-the-html-data"&gt;
+&lt;h3&gt;Get the HTML data&lt;/h3&gt;
+&lt;p&gt;First thing we need to do is to get the HTML data of the Facebook post we are interested in, into our Python script.
+We can do this using the Python library, &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;requests&lt;/span&gt;&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Web scraping Facebook is a bit different, as the content is behind a login page.
+We will need to first have a look at the HTML code of the login page.
+For this project, we are going to log into &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;https://mbasic.facebook.com&lt;/span&gt;&lt;/code&gt;:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;start working your way through the HTML until you find the &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;&amp;lt;form&amp;gt;&lt;/span&gt;&lt;/code&gt; HTML tag.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;within the &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;&amp;lt;form&amp;gt;&lt;/span&gt;&lt;/code&gt; tag look for the &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;method=&amp;quot;post&amp;quot;&lt;/span&gt;&lt;/code&gt; argument.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;go down further into the form tag and look for the &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;&amp;lt;input&amp;gt;&lt;/span&gt;&lt;/code&gt; tags. There should be at least two (&lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;username&lt;/span&gt;&lt;/code&gt; and &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;password&lt;/span&gt;&lt;/code&gt;). The username input tag is generally of &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;type=email&lt;/span&gt;&lt;/code&gt; and the password, &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;type=password&lt;/span&gt;&lt;/code&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;look within these input tags for a name argument. This is the name of this input field. This is also how requests is going to know where to “enter” your credentials. For this it is &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;name=&amp;quot;email&amp;quot;&lt;/span&gt;&lt;/code&gt; and &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;name=&amp;quot;pass&amp;quot;&lt;/span&gt;&lt;/code&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/section&gt;
+&lt;section id="log-into-facebook"&gt;
+&lt;h3&gt;Log into Facebook&lt;/h3&gt;
+&lt;p&gt;The following code can be used to log into your Facebook account in order to scrape the necessary data that we need:&lt;/p&gt;
+&lt;div class="highlight-python notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;LOGIN_URL&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;https://www.facebook.com/login&amp;#39;&lt;/span&gt;
+
+&lt;span class="n"&gt;payload&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="s1"&gt;&amp;#39;email&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;your username&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+  &lt;span class="s1"&gt;&amp;#39;pass&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;your password&amp;#39;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="k"&gt;with&lt;/span&gt; &lt;span class="n"&gt;requests&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Session&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="n"&gt;session&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+  &lt;span class="n"&gt;post&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;session&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;post&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;LOGIN_URL&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;payload&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/section&gt;
+&lt;section id="scrape-the-data"&gt;
+&lt;h3&gt;Scrape the data&lt;/h3&gt;
+&lt;p&gt;The URL is standard for most posts. You will need the following:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;ID of post&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;amount of people who engaged with the post&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;With the two variables known, the URL where we will scrape the data is:&lt;/p&gt;
+&lt;div class="highlight-python notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;REQUEST_URL&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="sa"&gt;f&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;https://mbasic.facebook.com/ufi/reaction/profile/&lt;/span&gt;
+  &lt;span class="n"&gt;browser&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;fetch&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;limit&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;limit&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;total_count&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;17&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;ft_ent_identifier&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;post_ID&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Now we can scrape the data by adding the following line:&lt;/p&gt;
+&lt;div class="highlight-python notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;with&lt;/span&gt; &lt;span class="n"&gt;requests&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Session&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="n"&gt;session&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+  &lt;span class="n"&gt;post&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;session&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;post&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;POST_LOGIN_URL&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;payload&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+  &lt;span class="n"&gt;r&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;session&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;REQUEST_URL&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="c1"&gt;#Add this line&lt;/span&gt;
+  &lt;span class="c1"&gt;#^^^ Add this line... ^^^&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/section&gt;
+&lt;section id="zooming-in"&gt;
+&lt;h3&gt;Zooming in&lt;/h3&gt;
+&lt;p&gt;With the HTML data stored in the variable &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;r&lt;/span&gt;&lt;/code&gt; we can get the names of the people who liked the post with the following:&lt;/p&gt;
+&lt;div class="highlight-python notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;soup&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;BeautifulSoup&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;r&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;content&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;html.parser&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;names&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;soup&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;find_all&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;h3&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;class_&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;be&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;people_who_liked&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[]&lt;/span&gt;
+&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;names&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+  &lt;span class="n"&gt;people_who_liked&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;append&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;text&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;The list &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;people_who_liked&lt;/span&gt;&lt;/code&gt; has been created can will be used later.&lt;/p&gt;
+&lt;/section&gt;
+&lt;/section&gt;
+&lt;section id="people-who-shared"&gt;
+&lt;h2&gt;People who shared&lt;/h2&gt;
+&lt;p&gt;The same can be done for getting the list of people who shared the post, with a few changes to the code for &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;BeautifulSoup&lt;/span&gt;&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="highlight-python notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;with&lt;/span&gt; &lt;span class="n"&gt;requests&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Session&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="n"&gt;session&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+  &lt;span class="n"&gt;post&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;session&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;post&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;POST_LOGIN_URL&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;payload&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+  &lt;span class="n"&gt;r&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;session&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;REQUEST_URL&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="n"&gt;soup&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;BeautifulSoup&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;r&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;content&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;html.parser&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;names&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;soup&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;find_all&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;span&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="n"&gt;people_who_shared&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[]&lt;/span&gt;
+&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;names&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+  &lt;span class="n"&gt;people_who_shared&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;append&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;text&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/section&gt;
+&lt;section id="people-who-follows-your-page"&gt;
+&lt;h2&gt;People who follows your page&lt;/h2&gt;
+&lt;p&gt;This one is a bit more tricky.
+We can only access the list of people who follows a page, if you have administrator rights to that pages.
+Also, the list is not shown when you access it through the website address &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;https://mbasic.facebook.com&lt;/span&gt;&lt;/code&gt; and &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;https://m.facebook.com&lt;/span&gt;&lt;/code&gt; and we will thus need another approach to get the HTML data through the use of the Selenium library:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;Log in to Facebook&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Navigate to page settings listing the people who liked our page&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Scroll down until all the names are displayed on the screen&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Scrape the list of names&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;section id="load-the-page-of-names"&gt;
+&lt;h3&gt;Load the page of names&lt;/h3&gt;
+&lt;p&gt;Selenium can take control of the browser and log in:&lt;/p&gt;
+&lt;div class="highlight-python notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;selenium&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;webdriver&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;selenium.webdriver.common.keys&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Keys&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;selenium.webdriver.chrome.options&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Options&lt;/span&gt;
+
+&lt;span class="n"&gt;webdriver&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;driver&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;https://www.facebook.com/login&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="n"&gt;sleep&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="n"&gt;email_in&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;webdriver&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;driver&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;find_element_by_xpath&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;//*[@id=&amp;quot;email&amp;quot;]&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;email_in&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;send_keys&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;username&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="n"&gt;password_in&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;webdriver&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;driver&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;find_element_by_xpath&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;//*[@id=&amp;quot;pass&amp;quot;]&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;password_in&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;send_keys&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;password&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="n"&gt;login_btn&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;webdriver&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;driver&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;find_element_by_xpath&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;//*[@id=&amp;quot;loginbutton&amp;quot;]&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;login_btn&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;click&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;The &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;sleep()&lt;/span&gt;&lt;/code&gt; command gives the page time to load before entering the login details.
+Next we navigate to the page settings listing all the names:&lt;/p&gt;
+&lt;div class="highlight-python notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;page_name&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;your&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;page&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;
+&lt;span class="n"&gt;REQUEST_URL&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="sa"&gt;f&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;https://www.facebook.com/&lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="n"&gt;page_name&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s1"&gt;/settings/&lt;/span&gt;
+&lt;span class="n"&gt;tab&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;people_and_other_pages&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;ref&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;page_edit&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&lt;/span&gt;
+
+&lt;span class="n"&gt;webdriver&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;driver&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;REQUEST_URL&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="n"&gt;sleep&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;scrolls&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;15&lt;/span&gt;
+
+&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;range&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;scrolls&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+  &lt;span class="n"&gt;webdriver&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;driver&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;execute_script&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;window.scrollTo(0, document.body.scrollHeight);&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+  &lt;span class="n"&gt;sleep&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+  &lt;span class="n"&gt;page&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;webdriver&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;driver&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;page_source&lt;/span&gt;
+  &lt;span class="n"&gt;soup&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;BeautifulSoup&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;page&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;html.parser&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+  &lt;span class="n"&gt;names&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;soup&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;find_all&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;a&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;class_&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;_3cb8&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+  &lt;span class="n"&gt;people_who_liked_page&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[]&lt;/span&gt;
+  &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;names&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;people_who_liked_page&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;append&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;text&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;For the above code we assume that 15 page scrolls will show all the names of the people who follow the page, but you can increase it depending on the amount of people who follow your page.&lt;/p&gt;
+&lt;/section&gt;
+&lt;/section&gt;
+&lt;section id="determine-the-winner"&gt;
+&lt;h2&gt;Determine the winner&lt;/h2&gt;
+&lt;p&gt;We now have three lists:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;People who liked the page&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;People who liked the post&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;People who shared the post&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;We need to create a new list that has all the names of the people who appear in all three of the above lists:&lt;/p&gt;
+&lt;div class="highlight-python notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;eligible_to_win&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[]&lt;/span&gt;
+&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;list_A&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+  &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;list_B&lt;/span&gt; &lt;span class="ow"&gt;and&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;list_C&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;eligible_to_win&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;append&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;The last thing to do is to select a winner randomly:&lt;/p&gt;
+&lt;div class="highlight-python notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;winner&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;random&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;choice&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;eligible&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;You can also select more than one winner:&lt;/p&gt;
+&lt;div class="highlight-python notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;winners&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;random&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sample&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;items&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;n&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;where &lt;cite&gt;n&lt;/cite&gt; is the amount of winners you want to select.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id="conclusion"&gt;
+&lt;h2&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;This code will ensure that you can select a winner to the promotional post in only a few minutes, rather than doing it manually.&lt;/p&gt;
+&lt;/section&gt;
+&lt;/section&gt;
+</content>
+    <link href="https://adriaan90.github.io/posts/python-how-to-webscrape-facebook/"/>
+    <summary>I am sure you have seen posts from a company’s or small business’s Facebook page where they ask you to like, share and follow in order to win a prize.
+But, how do these businesses then determine who have won? They will have to go and compare the names of all the people who:</summary>
+    <category term="beautifulsoup" label="beautifulsoup"/>
+    <category term="python" label="python"/>
+    <category term="requests" label="requests"/>
+    <category term="tutorial" label="tutorial"/>
+    <category term="webscrape" label="webscrape"/>
+    <published>2020-04-04T00:00:00+00:00</published>
   </entry>
   <entry>
     <id>https://adriaan90.github.io/posts/JSAE-SAE-conference/</id>
