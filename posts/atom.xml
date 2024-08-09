@@ -2,10 +2,53 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <id>https://adriaan90.github.io/</id>
   <title>Adriaan's Blog</title>
-  <updated>2024-08-08T20:10:28.215548+00:00</updated>
+  <updated>2024-08-09T18:06:20.966869+00:00</updated>
   <link href="https://adriaan90.github.io/"/>
   <link href="https://adriaan90.github.io/posts/atom.xml" rel="self"/>
-  <generator uri="https://ablog.readthedocs.io/" version="0.11.10">ABlog</generator>
+  <generator uri="https://ablog.readthedocs.io/" version="0.11.11">ABlog</generator>
+  <entry>
+    <id>https://adriaan90.github.io/posts/wave-create-fuel-file/</id>
+    <title>Create a fuel file in Ricardo WAVE</title>
+    <updated>2020-12-29T00:00:00+00:00</updated>
+    <author>
+      <name>adriaan</name>
+    </author>
+    <content type="html">&lt;section id="create-a-fuel-file-in-ricardo-wave"&gt;
+
+&lt;p&gt;How to create a fuel file in Ricardo WAVE.&lt;/p&gt;
+&lt;p&gt;The following instructions can be used to create a fuel file for Ricardo WAVE.
+You can use this to either create a .fue file consisting of one blend component, or a blend with more than one:&lt;/p&gt;
+&lt;ol class="arabic simple"&gt;
+&lt;li&gt;&lt;p&gt;Ensure you have downloaded the .dat files of the fuels you want to blend.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Open up the command prompt window (Start button-&amp;gt;Search-&amp;gt;”cmd”-&amp;gt; click on cmd.exe)&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Ensure the command prompt is opened in the folder where the .dat files are saved. To change to the correct folder path:&lt;/p&gt;
+&lt;ol class="arabic simple"&gt;
+&lt;li&gt;&lt;p&gt;Copy the file path in your Windows Explorer window. First open the folder where the files are.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Click on the little folder icon on the left of the file path and copy the file path.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Use command &lt;cite&gt;cd&lt;/cite&gt; followed by the file path and press enter.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;The new line in the command prompt will now show that it is open in the folder where the .dat files are.&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Now enter the following command:&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight-bash notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;buildfuel&lt;span class="w"&gt; &lt;/span&gt;-d&lt;span class="w"&gt; &lt;/span&gt;diesel.dat&lt;span class="w"&gt; &lt;/span&gt;ethanol.dat&lt;span class="w"&gt; &lt;/span&gt;FAME.dat&lt;span class="w"&gt; &lt;/span&gt;-f&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;.89&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;.09&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;.02&lt;span class="w"&gt; &lt;/span&gt;-p&lt;span class="w"&gt; &lt;/span&gt;Blended_Fuel
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;The above command is to create a B2E9 blend.
+First the .dat files of all the fuels that will be used in the blend are listed, then the percentage of each fuel in the blend and then the name you want to call the fuel file.
+For binary blends the command line will be:&lt;/p&gt;
+&lt;div class="highlight-bash notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;buildfuel&lt;span class="w"&gt; &lt;/span&gt;-d&lt;span class="w"&gt; &lt;/span&gt;diesel.dat&lt;span class="w"&gt; &lt;/span&gt;ethanol.dat&lt;span class="w"&gt; &lt;/span&gt;-f&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;.80&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;.20&lt;span class="w"&gt; &lt;/span&gt;-p&lt;span class="w"&gt; &lt;/span&gt;E20
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;The above command is to create a binary blend of E20 blend.&lt;/p&gt;
+&lt;/section&gt;
+</content>
+    <link href="https://adriaan90.github.io/posts/wave-create-fuel-file/"/>
+    <summary>How to create a fuel file in Ricardo WAVE.</summary>
+    <category term="Ricardo-WAVE" label="Ricardo-WAVE"/>
+    <category term="how-to" label="how-to"/>
+    <published>2020-12-29T00:00:00+00:00</published>
+  </entry>
   <entry>
     <id>https://adriaan90.github.io/posts/ideal-rankine-cycle-regen/</id>
     <title>Ideal Rankine Cycle with feedwater heater calculations</title>
